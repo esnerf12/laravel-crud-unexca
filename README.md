@@ -67,6 +67,6 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Comandos
 
-Instalar dependencias: npm install
-Inicializar servidor: php artisan serve
-Incicializar cliente: npm run dev
+- Instalar dependencias: npm install
+- Inicializar servidor: php artisan serve
+- Inicializar cliente: npm run dev
