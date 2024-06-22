@@ -59,7 +59,7 @@ export default function Index ({ auth, personas }) {
                                     Añadir persona
                                 </button>
                             </Link>
-                            <a className='pl-2 inline-block hidden' href={route('personas.export')}>
+                            <a className='pl-2 hidden' href={route('personas.export')}>
                                 <button className='flex justify-center items-center gap-2 my-2 px-4 py-2 transform hover:scale-105 duration-200 bg-green-700 text-white rounded-lg'>
                                     <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 18">
                                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3"/>
