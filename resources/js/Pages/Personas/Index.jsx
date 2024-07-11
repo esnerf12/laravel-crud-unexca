@@ -4,11 +4,12 @@ import { Head } from '@inertiajs/react'
 import { Link } from '@inertiajs/react'
 import { router } from '@inertiajs/react'
 import { usePage } from '@inertiajs/react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 export default function Index ({ auth, personas }) {
 
     const [ term, setTerm ] = useState('')
+    const [ isOpened, setIsOpened ] = useState(false)
     const { flash } = usePage().props
 
     function destroy(id) {
@@ -25,6 +26,16 @@ export default function Index ({ auth, personas }) {
     function search(e) {
         e.preventDefault()
         router.get(route('personas.index', {term: term}))
+    }
+
+    const table = useRef()
+
+    const printTable = () => {
+        let originalContents = document.body.innerHTML;
+        document.body.innerHTML = table.current.innerHTML;
+        window.print();
+        document.body.innerHTML = originalContents;
+        location.reload()
     }
 
     return (
@@ -51,22 +62,30 @@ export default function Index ({ auth, personas }) {
                     }
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 bg-white border-b border-gray-200">
-                            <Link className='inline-block' href={route('personas.create')}>
-                                <button className='flex justify-center items-center gap-2 my-2 px-4 py-2 transform hover:scale-105 duration-200 bg-slate-700 text-white rounded-lg'>
-                                    <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M9.546.5a9.5 9.5 0 1 0 9.5 9.5 9.51 9.51 0 0 0-9.5-9.5ZM13.788 11h-3.242v3.242a1 1 0 1 1-2 0V11H5.304a1 1 0 0 1 0-2h3.242V5.758a1 1 0 0 1 2 0V9h3.242a1 1 0 1 1 0 2Z"/>
-                                    </svg>
-                                    Añadir persona
-                                </button>
-                            </Link>
-                            <a className='pl-2 hidden' href={route('personas.export')}>
-                                <button className='flex justify-center items-center gap-2 my-2 px-4 py-2 transform hover:scale-105 duration-200 bg-green-700 text-white rounded-lg'>
+                            <div className='flex gap-2'>
+                                <Link className='inline-block' href={route('personas.create')}>
+                                    <button className='flex justify-center items-center gap-2 my-2 px-4 py-2 transform hover:scale-105 duration-200 bg-slate-700 text-white rounded-lg'>
+                                        <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.546.5a9.5 9.5 0 1 0 9.5 9.5 9.51 9.51 0 0 0-9.5-9.5ZM13.788 11h-3.242v3.242a1 1 0 1 1-2 0V11H5.304a1 1 0 0 1 0-2h3.242V5.758a1 1 0 0 1 2 0V9h3.242a1 1 0 1 1 0 2Z"/>
+                                        </svg>
+                                        Añadir persona
+                                    </button>
+                                </Link>
+                                <a href={route('personas.export')}>
+                                    <button className='flex justify-center items-center gap-2 my-2 px-4 py-2 transform hover:scale-105 duration-200 bg-green-700 text-white rounded-lg'>
+                                        <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 18">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3"/>
+                                        </svg>
+                                        Descargar Excel
+                                    </button>
+                                </a>
+                                <button onClick={printTable} className='flex justify-center items-center gap-2 my-2 px-4 py-2 transform hover:scale-105 duration-200 bg-orange-700 text-white rounded-lg'>
                                     <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 18">
                                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3"/>
                                     </svg>
-                                    Descargar Excel
+                                    Descargar PDF
                                 </button>
-                            </a>
+                            </div>
                             <div className="flex justify-end items-center mb-2">
                                 <div className="text-center md:px-2 px-4">
                                     <div className="mb-3 xl:w-96">
@@ -100,8 +119,9 @@ export default function Index ({ auth, personas }) {
                                     </div>
                                 </div>
                             </div>
-                                <div
+                            <div
                                 className="relative overflow-x-auto shadow-md sm:rounded-lg"
+                                ref={table}
                             >
                                 <table
                                     className="w-full text-sm text-left text-gray-500 dark:text-gray-400"
